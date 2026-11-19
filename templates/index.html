@@ -84,6 +84,12 @@
 
     </main>
 
+    <!-- for loading the java_script -->
+    <!-- Connects this HTML page to script.js inside the "static" folder -->
+    <!-- Flask uses url_for() to automatically find the right file path -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    
+
 </body>
 
 </html>
