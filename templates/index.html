@@ -1,76 +1,62 @@
 
 <!DOCTYPE html>
-<!-- Tells the browser that this is an HTML5 document -->
-
 <html lang="en">
 
+
+<!-- HEAD -->
 <head>
-    <!-- Contains information about the webpage, not the visible content -->
+    <!-- Contains information about the webpage -->
 
     <meta charset="UTF-8">
-    <!-- Allows the page to display special characters and symbols -->
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Makes the website adapt to different screen sizes -->
 
     <title>constellation-notes</title>
-    <!-- The title displayed in the browser tab -->
+    <!-- displayed title -->
 
 
-    <!-- Connects this HTML file to our CSS stylesheet.
+    <!-- Connects this HTML file to CSS stylesheet.
          Flask looks for style.css inside the static folder. -->
-
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
 </head>
 
-
+<!-- BODY -->
 <body>
-    <!-- Everything inside the body is part of the visible webpage -->
-
+    <!--the visible webpage -->
 
     <!-- MAIN CONTAINER
-         Groups the main content of our website together.
-         The class allows us to style the entire container using CSS. -->
+         class allows styling of the entire container using CSS. -->
 
     <main class="container">
 
 
-        <!-- HEADER
-             Contains the introductory text and main heading. -->
-
+        <!-- HEADER -->
         <header class="page-header">
 
-            <!-- Main heading of the website -->
-
             <h1>constellation-notes</h1>
-
-            <!-- Short description underneath the heading -->
-
             <p class="subtitle">
                 create your own constellation 
             </p>
 
         </header>
 
-
+        <!-- SECTION 1 -->
         <!-- CONSTELLATION EDITOR
-             This section will eventually contain our interactive night sky. -->
+             This section is for the interactive night sky. -->
 
         <section class="sky-section">
 
 
             <!-- THE SKY
-                 This div is our main interactive canvas.
-
                  class="sky" allows CSS to style it.
                  id="sky" allows JavaScript to find it.
 
                  Later, JavaScript will use this element to:
-                 1. Detect where the user clicks.
-                 2. Place stars at those coordinates.
-                 3. Draw lines between selected stars.
-                 4. Remove stars when requested. -->
+                 1. Detect user clicks and place stars
+                 2. Draw lines between selected stars.
+                 3. Remove stars when requested. -->
 
             <div class="sky" id="sky">
 
@@ -84,20 +70,15 @@
                 <p class="sky-instruction">
                     start clicking to create the stars..
                 </p>
-
-
             </div>
 
+        <!-- SECTION 2-->
         </section>
 
-
-        <!-- FOOTER
-             A small decorative message at the bottom of the page. -->
+        <!-- FOOTER-->
 
         <footer>
-
             <p>Thank you for using this!</p>
-
         </footer>
 
 
