@@ -117,3 +117,17 @@ footer {
     font-size: 13px;
     letter-spacing: 1px;
 }
+
+
+/*Individual stars placed by the user */
+/* Styles every HTML element with the class "star".
+   JavaScript assigns this class when creating a new star. */
+
+.star {
+    position: absolute;
+    transform: translate(-50%, -50%); /*centres the star on click point */
+    color: #D6B56D;
+    font-size: 24px;
+    text-shadow: 0 0 10px #D6B56D;
+    pointer-events: none;
+}
