@@ -1,5 +1,7 @@
 // java script -> to let the user interact with the website
 
+console.log("My script.js file is loading!"); //test to check working
+
 // first -> find the sky, cause this is the main user interacting area
 // finds this element from html -> <div class="sky" id="sky">
 // const -> creates a variable
