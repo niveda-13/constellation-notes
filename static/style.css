@@ -1,0 +1,119 @@
+/* To control the layout of how our html page actually looks */
+
+/* 1. GENERAL PAGE SETTINGS*/
+
+/* The * selector applies the settting to every HTML element.*/
+/* border-box -> includes padding, border inside total width and height */
+   * {box-sizing: border-box;}
+
+
+/* BODY / settings for the visible webpage */
+
+body {
+    margin: 0;                   
+    min-height: 100vh; /* Make page at least as tall as screen */
+    background: #080d20; /* Overall page background colour */
+    color: #f7edcf;/* Default text colour */
+    font-family: Georgia, serif; /* Default font */
+}
+
+
+/* 2. MAIN CONTAINER */
+
+/* .container selects the HTML element with class="container".
+   and controls positioning */
+
+.container {
+    width: min(90%, 1000px); /* 90% width, maximum 1000px */
+    margin: 0 auto;          /* Centre the container horizontally */
+    padding: 60px 0 30px;    /* Space: top, sides, bottom */
+    text-align: center;     /* Centre the text inside */
+}
+
+
+/* 3. HEADER AND TITLE */
+
+/* introductory text above the title */
+.eyebrow {color: #FAF8F5;          /* like ivory ish*/
+    font-family: sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px; }
+
+
+/* Main website heading */
+
+h1 {
+    font-size: clamp(38px, 6vw, 64px);
+    /* Responsive font size:
+       minimum 38px, preferred 6vw, maximum 64px */
+
+    font-weight: normal; 
+    margin: 20px 0 10px;
+}
+
+
+/* Subtitle */
+
+.subtitle {
+    color: #D6B56D;          /* gold */
+    font-size: 17px;
+}
+
+
+/* 4. INTERACTIVE NIGHT SKY*/
+
+/* main area where users will create their own constellations. */
+
+.sky {
+    position: relative;
+    /* Creates a positioning reference for stars
+       (later JavaSript). */
+
+    width: 100%; 
+    height: 480px;  
+    margin-top: 45px; 
+    overflow: hidden; /* stars inside the sky */
+    border: 1px solid #34334d; /* Subtle outline */
+    border-radius: 12px; /* Rounded corners */
+
+    /* Radial gradient for a soft glow in the middle. */
+
+    background: radial-gradient(
+        ellipse at center,
+        #19213e 0%,
+        #10172e 55%,
+        #080d20 100%
+    );
+}
+
+
+/* 5. EMPTY SKY INSTRUCTION*/
+
+/* message to appear in the middle of the empty sky. */
+
+.sky-instruction {
+    position: absolute;
+    top: 50%;                /* Position at vertical midpoint */
+    left: 50%;               /* Position at horizontal midpoint */
+
+    transform: translate(-50%, -50%);
+    /* Shift backwards by half its own width and height
+       to centre the text precisely. */
+
+    color: #777b96;
+    font-size: 15px;
+
+    pointer-events: none;
+    /* Let mouse clicks pass through this text.
+       Important when we make the sky interactive! */
+}
+
+
+/* 6. FOOTER*/
+
+footer {
+    margin-top: 30px;        /* Space above footer */
+    color: #c6a96b;           /* Gold text */
+    font-size: 13px;
+    letter-spacing: 1px;
+}
