@@ -155,3 +155,48 @@ footer {
     stroke-width: 1.5;
     opacity: 0.8;
 }
+
+/* button for deleting selected stars */
+
+#delete-star {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: transparent;
+    border: 1px solid #D6B56D;
+    border-radius: 6px;
+    color: #D6B56D;
+    font-family: Georgia, serif;
+    cursor: pointer;
+}
+
+#delete-star:hover {
+    background: #D6B56D;
+    color: #080d20;
+}
+
+
+/* styling for constellation name and message fields */
+.details-section input,
+.details-section textarea {
+    background-color: #10182f;
+    border: 1px solid #5c5039;
+    border-radius: 6px;
+    color: #FAF8F5;
+    font-family: Georgia, serif;
+    font-size: 15px;
+    padding: 12px;
+}
+
+/* placeholder text */
+.details-section input::placeholder,
+.details-section textarea::placeholder {
+    color: #a99a76;
+}
+
+/* when the user clicks inside a field */
+.details-section input:focus,
+.details-section textarea:focus {
+    outline: none;
+    border-color: #D6B56D;
+    box-shadow: 0 0 8px rgba(214, 181, 109, 0.25);
+}

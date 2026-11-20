@@ -11,6 +11,15 @@ const sky = document.getElementById("sky");
 // gives javascript access to the svg element "connections" to draw lines
 const connectionsLayer = document.getElementById("connections");
 
+
+// gives javascript access to the delete button
+const deleteButton = document.getElementById("delete-star");
+
+// gives javascript access to the constellation name and personal message fields
+const nameInput = document.getElementById("constellation-name");
+const messageInput = document.getElementById("personal-message");
+
+
 // following 3 variables added to help in connecting stars
 // stars -> stores the coordinates of all stars
 // connections -> stores which stars are connected
@@ -126,7 +135,71 @@ sky.addEventListener("click", function(event) {
 
     // querySelector() finds an element matching a css selector
     if (instruction) {
-        instruction.style.display = "none";
-    }
+        instruction.style.display = "none";}
 
 });
+
+// listening for clicks on the delete button
+deleteButton.addEventListener("click", function() {
+
+    // checking if a star is currently selected
+    if (selectedStar === null) {
+        return;}
+
+    // removing the selected star from the stars array
+    stars.splice(selectedStar, 1);
+
+    // removing connections involving the selected star
+    connections = connections
+        .filter(connection =>
+            connection[0] !== selectedStar &&
+            connection[1] !== selectedStar
+        );
+
+    // removing the selected star visually
+    const starToRemove = sky.querySelector(
+        `.star[data-index="${selectedStar}"]`
+    );
+    starToRemove.remove();
+
+    // updating the indices of the remaining stars
+    const remainingStars = sky.querySelectorAll(".star");
+
+    remainingStars.forEach(function(star, index) {
+        star.dataset.index = index;
+    });
+
+    // updating the indices of the remaining connections
+    connections = connections.map(connection => [
+        connection[0] > selectedStar ? connection[0] - 1 : connection[0],
+        connection[1] > selectedStar ? connection[1] - 1 : connection[1]
+    ]);
+
+    // clearing the existing lines
+    connectionsLayer.innerHTML = "";
+
+    // redrawing the remaining connections
+    connections.forEach(function(connection) {
+        const firstStar = stars[connection[0]];
+        const secondStar = stars[connection[1]];
+
+        const line = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "line"
+        );
+
+        line.setAttribute("x1", firstStar.x);
+        line.setAttribute("y1", firstStar.y);
+        line.setAttribute("x2", secondStar.x);
+        line.setAttribute("y2", secondStar.y);
+
+        line.classList.add("connection-line");
+        connectionsLayer.appendChild(line);
+    });
+
+    // clearing the selection
+    selectedStar = null;
+
+});
+
+
