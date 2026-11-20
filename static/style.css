@@ -129,5 +129,29 @@ footer {
     color: #D6B56D;
     font-size: 24px;
     text-shadow: 0 0 10px #D6B56D;
+    /*pointer-events: none;*/
+}
+
+/*Appearance of a selected star*/
+
+.star.selected {
+    color: #FAF8F5;
+    font-size: 32px;
+    text-shadow: 0 0 15px #FAF8F5;
+}
+
+/* Layer used to draw connections between stars */
+#connections {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
+}
+
+/* Appearance of constellation lines */
+.connection-line {
+    stroke: #D6B56D;
+    stroke-width: 1.5;
+    opacity: 0.8;
 }
