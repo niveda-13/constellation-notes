@@ -446,7 +446,18 @@ function generateKeepsakeHTML(data) {
                 margin-top: 35px;
                 line-height: 1.8;
                 white-space: pre-wrap;
+                font-size: 20px;
+                color: #D8D3C5; 
             }
+
+            h1 {
+                font-size: 30px;
+                color: #C2A66B;
+                
+            }
+            
+
+
         </style>
 
     </head>
