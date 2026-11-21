@@ -22,15 +22,20 @@ const messageInput = document.getElementById("personal-message");
 // gives javascript access to the download button
 const downloadButton = document.getElementById("download-constellation");
 
+// delete connection button
+const deleteConnectionButton = document.getElementById("delete-connection");
+
 
 // following 3 variables added to help in connecting stars
 // stars -> stores the coordinates of all stars
 // connections -> stores which stars are connected
 // selectedStar -> stores the index of the currently selected star
+// selectedConnection -> stores the index of the connection which is clicked
 
 let stars = [];
 let connections = [];
 let selectedStar = null;
+let selectedConnection = null;
 
 
 // detecting / listening for clicks on the sky
@@ -71,61 +76,90 @@ sky.addEventListener("click", function(event) {
     star.style.left = `${x}px`;
     star.style.top = `${y}px`;
 
-    // listen for clicks on this individual star
-    // clicking again on a star will select it for connection
-    star.addEventListener("click", function(event) {
+// listen for clicks on this individual star
+// clicking again on a star will select it for connection
+star.addEventListener("click", function(event) {
 
-        // stop this click from creating another star
-        event.stopPropagation();
+    // stop this click from creating another star
+    event.stopPropagation();
 
-        // if no star is selected, this should be selected
-        if (selectedStar === null) {
-            selectedStar = starIndex;
-            star.classList.add("selected");
-        }
+    // getting the star's current index (in case stars were deleted)
+    const clickedStarIndex = Number(star.dataset.index);
 
-        // if this star is already selected, it should be deselected
-        else if (selectedStar === starIndex) {
-            selectedStar = null;
-            star.classList.remove("selected");
-        }
+    // if no star is selected, this should be selected
+    if (selectedStar === null) {
+        selectedStar = clickedStarIndex;
+        star.classList.add("selected");
+    }
 
-        // otherwise, connect the previously selected star to this one
-        else {
-            const firstStar = stars[selectedStar];
-            const secondStar = stars[starIndex];
+    // if this star is already selected, it should be deselected
+    else if (selectedStar === clickedStarIndex) {
+        selectedStar = null;
+        star.classList.remove("selected");
+    }
 
-            // create an svg line
-            const line = document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "line"
-            );
+    // otherwise, connect the previously selected star to this one
+    else {
+        const firstStar = stars[selectedStar];
+        const secondStar = stars[clickedStarIndex];
 
-            // line's starting and ending coordinates
-            line.setAttribute("x1", firstStar.x);
-            line.setAttribute("y1", firstStar.y);
-            line.setAttribute("x2", secondStar.x);
-            line.setAttribute("y2", secondStar.y);
+        // create an svg line
+        const line = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "line"
+        );
 
-            line.classList.add("connection-line");
+        // line's starting and ending coordinates
+        line.setAttribute("x1", firstStar.x);
+        line.setAttribute("y1", firstStar.y);
+        line.setAttribute("x2", secondStar.x);
+        line.setAttribute("y2", secondStar.y);
 
-            // line added to the svg layer
-            connectionsLayer.appendChild(line);
+        line.classList.add("connection-line");
 
-            // connection is stored as a pair of star indices
-            connections.push([selectedStar, starIndex]);
+        // assign the connection's index
+        line.dataset.index = connections.length;
 
-            // highlight removed from first star
-            const previousStar = sky.querySelector(
-                `.star[data-index="${selectedStar}"]`
-            );
-            previousStar.classList.remove("selected");
+        // listen for clicks on this connection
+        line.addEventListener("click", function(event) {
 
-            // selection cleared
-            selectedStar = null;
-        }
+            // prevent the click from reaching the sky
+            event.stopPropagation();
 
-    });
+            // remove highlight from previously selected connection
+            if (selectedConnection !== null) {
+                const previousLine = connectionsLayer.querySelector(
+                    `.connection-line[data-index="${selectedConnection}"]`
+                );
+
+                if (previousLine) {
+                    previousLine.classList.remove("selected");
+                }
+            }
+
+            // select this connection
+            selectedConnection = Number(line.dataset.index);
+            line.classList.add("selected");
+
+});
+
+        // line added to the svg layer
+        connectionsLayer.appendChild(line);
+
+        // connection is stored as a pair of star indices
+        connections.push([selectedStar, clickedStarIndex]);
+
+        // highlight removed from first star
+        const previousStar = sky.querySelector(
+            `.star[data-index="${selectedStar}"]`
+        );
+        previousStar.classList.remove("selected");
+
+        // selection cleared
+        selectedStar = null;
+    }
+
+});
 
 
     // adding star to the sky
@@ -181,7 +215,7 @@ deleteButton.addEventListener("click", function() {
     connectionsLayer.innerHTML = "";
 
     // redrawing the remaining connections
-    connections.forEach(function(connection) {
+    connections.forEach(function(connection, index) {
         const firstStar = stars[connection[0]];
         const secondStar = stars[connection[1]];
 
@@ -196,11 +230,68 @@ deleteButton.addEventListener("click", function() {
         line.setAttribute("y2", secondStar.y);
 
         line.classList.add("connection-line");
-        connectionsLayer.appendChild(line);
+
+        // assign the connection's updated index
+        line.dataset.index = index;
+
+        // listen for clicks on this connection
+        line.addEventListener("click", function(event) {
+            event.stopPropagation();
+
+            // remove highlight from previously selected connection
+            if (selectedConnection !== null) {
+                const previousLine = connectionsLayer.querySelector(
+                    `.connection-line[data-index="${selectedConnection}"]`
+                );
+
+                if (previousLine) {
+                    previousLine.classList.remove("selected");
+                }
+            }
+
+        // select this connection
+        selectedConnection = Number(line.dataset.index);
+        line.classList.add("selected");
     });
+
+    connectionsLayer.appendChild(line);
+});
 
     // clearing the selection
     selectedStar = null;
+    selectedConnection = null;
+
+});
+
+// delete the selected connection
+deleteConnectionButton.addEventListener("click", function() {
+
+    // do nothing if no connection is selected
+    if (selectedConnection === null) {
+        return;
+    }
+
+    // remove the connection from the data array
+    connections.splice(selectedConnection, 1);
+
+    // remove the selected line from the svg
+    const selectedLine = connectionsLayer.querySelector(
+        `.connection-line[data-index="${selectedConnection}"]`
+    );
+
+    if (selectedLine) {
+        selectedLine.remove();
+    }
+
+    // update the indices of the remaining connections
+    const remainingLines = connectionsLayer.querySelectorAll(".connection-line");
+
+    remainingLines.forEach(function(line, index) {
+        line.dataset.index = index;
+    });
+
+    // clear the selection
+    selectedConnection = null;
 
 });
 
