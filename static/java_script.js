@@ -117,11 +117,25 @@ star.addEventListener("click", function(event) {
 
         line.classList.add("connection-line");
 
+        // creating a wider invisible area for easier clicking
+        const hitLine = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "line"
+        );
+
+        hitLine.setAttribute("x1", firstStar.x);
+        hitLine.setAttribute("y1", firstStar.y);
+        hitLine.setAttribute("x2", secondStar.x);
+        hitLine.setAttribute("y2", secondStar.y);
+
+        hitLine.classList.add("connection-hit-area");
+        hitLine.dataset.index = connections.length;
+
         // assign the connection's index
         line.dataset.index = connections.length;
 
-        // listen for clicks on this connection
-        line.addEventListener("click", function(event) {
+        // listen for clicks on the invisible hit area
+        hitLine.addEventListener("click", function(event) {
 
             // prevent the click from reaching the sky
             event.stopPropagation();
@@ -138,12 +152,13 @@ star.addEventListener("click", function(event) {
             }
 
             // select this connection
-            selectedConnection = Number(line.dataset.index);
+            selectedConnection = Number(hitLine.dataset.index);
             line.classList.add("selected");
 
 });
 
         // line added to the svg layer
+        connectionsLayer.appendChild(hitLine);
         connectionsLayer.appendChild(line);
 
         // connection is stored as a pair of star indices
@@ -231,11 +246,24 @@ deleteButton.addEventListener("click", function() {
 
         line.classList.add("connection-line");
 
+        const hitLine = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "line"
+        );
+        
+        hitLine.setAttribute("x1", firstStar.x);
+        hitLine.setAttribute("y1", firstStar.y);
+        hitLine.setAttribute("x2", secondStar.x);
+        hitLine.setAttribute("y2", secondStar.y);
+        
+        hitLine.classList.add("connection-hit-area");
+        hitLine.dataset.index = index;
+
         // assign the connection's updated index
         line.dataset.index = index;
 
         // listen for clicks on this connection
-        line.addEventListener("click", function(event) {
+        hitLine.addEventListener("click", function(event) {
             event.stopPropagation();
 
             // remove highlight from previously selected connection
@@ -250,10 +278,11 @@ deleteButton.addEventListener("click", function() {
             }
 
         // select this connection
-        selectedConnection = Number(line.dataset.index);
+        selectedConnection = Number(hitLine.dataset.index);
         line.classList.add("selected");
     });
 
+    connectionsLayer.appendChild(hitLine);
     connectionsLayer.appendChild(line);
 });
 
@@ -274,7 +303,17 @@ deleteConnectionButton.addEventListener("click", function() {
     // remove the connection from the data array
     connections.splice(selectedConnection, 1);
 
-    // remove the selected line from the svg
+    
+    // Find and remove the invisible clickable area
+    const selectedHitArea = connectionsLayer.querySelector(
+        `.connection-hit-area[data-index="${selectedConnection}"]`
+    );
+
+    if (selectedHitArea) {
+        selectedHitArea.remove();
+    }
+
+    // Find and remove the visible connection line
     const selectedLine = connectionsLayer.querySelector(
         `.connection-line[data-index="${selectedConnection}"]`
     );
@@ -288,6 +327,12 @@ deleteConnectionButton.addEventListener("click", function() {
 
     remainingLines.forEach(function(line, index) {
         line.dataset.index = index;
+    });
+
+    const remainingHitAreas = connectionsLayer.querySelectorAll(".connection-hit-area");
+
+    remainingHitAreas.forEach(function(hitArea, index) {
+        hitArea.dataset.index = index;
     });
 
     // clear the selection

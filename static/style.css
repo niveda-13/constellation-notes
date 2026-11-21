@@ -161,8 +161,15 @@ footer {
     stroke-width: 1.5;
     opacity: 0.8;
     pointer-events: stroke;
-    cursor: pointer;
     stroke-linecap: round;
+    pointer-events: none;
+}
+
+.connection-hit-area {
+    stroke: transparent;
+    stroke-width: 18px;
+    pointer-events: stroke;
+    cursor: pointer;
 }
 
 /* highlight a selected connection */
