@@ -70,7 +70,7 @@ h1 {
        (later JavaSript). */
 
     width: 100%; 
-    height: 480px;  
+    height: 478px;  
     margin-top: 45px; 
     overflow: hidden; /* stars inside the sky */
     border: 1px solid #34334d; /* Subtle outline */
@@ -172,6 +172,46 @@ footer {
 #delete-star:hover {
     background: #D6B56D;
     color: #080d20;
+}
+
+/* download button */
+#download-constellation {
+    margin-top: 15px;
+    padding: 12px 24px;
+    background-color: transparent;
+    border: 1px solid #D6B56D;
+    border-radius: 6px;
+    color: #D6B56D;
+    font-family: Georgia, serif;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+/* download button hover effect */
+#download-constellation:hover {
+    background-color: #D6B56D;
+    color: #080d20;
+}
+
+/* arranging the name and message fields */
+.details-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 600px;
+    margin: 30px auto;
+}
+
+/* keeping labels aligned to the left */
+.details-section label {
+    text-align: left;
+}
+
+/* making input fields fit their container */
+.details-section input,
+.details-section textarea {
+    width: 100%;
+    box-sizing: border-box;
 }
 
 

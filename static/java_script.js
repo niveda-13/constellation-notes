@@ -19,6 +19,9 @@ const deleteButton = document.getElementById("delete-star");
 const nameInput = document.getElementById("constellation-name");
 const messageInput = document.getElementById("personal-message");
 
+// gives javascript access to the download button
+const downloadButton = document.getElementById("download-constellation");
+
 
 // following 3 variables added to help in connecting stars
 // stars -> stores the coordinates of all stars
@@ -67,7 +70,6 @@ sky.addEventListener("click", function(event) {
     // positioning star based on click coordinates
     star.style.left = `${x}px`;
     star.style.top = `${y}px`;
-
 
     // listen for clicks on this individual star
     // clicking again on a star will select it for connection
@@ -202,4 +204,221 @@ deleteButton.addEventListener("click", function() {
 
 });
 
+// listening for clicks on the download button
+downloadButton.addEventListener("click", function() {
+
+    // collecting all the information entered by the user
+    const constellationData = {
+        name: nameInput.value.trim(),
+        message: messageInput.value.trim(),
+        stars: stars,
+        connections: connections,
+        width: sky.clientWidth,
+        height: sky.clientHeight
+    };
+
+    // checking what data we have collected
+    console.log(JSON.stringify(constellationData, null, 2));
+
+    // generating the keepsake html
+    const keepsakeHTML = generateKeepsakeHTML(constellationData);
+
+    // checking the generated html
+    console.log(keepsakeHTML);
+
+    // converting the html string into a downloadable file
+    const file = new Blob([keepsakeHTML], {
+        type: "text/html"
+    });
+
+    // creating a temporary url for the file
+    const fileURL = URL.createObjectURL(file);
+
+    // creating a temporary download link
+    const link = document.createElement("a");
+    link.href = fileURL;
+    link.download = `${constellationData.name || "my-constellation"}.html`;
+
+    // triggering the download
+    link.click();
+
+    // releasing the temporary url
+    URL.revokeObjectURL(fileURL);
+
+});
+
+// converting special html characters into safe text
+function escapeHTML(text) {
+    return String(text).replace(/[&<>"']/g, function(character) {
+        const replacements = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        };
+
+        return replacements[character];
+    });
+}
+
+// function to generate the standalone constellation webpage
+function generateKeepsakeHTML(data) {
+
+    // making the user's text safe to display in html
+    const safeName = escapeHTML(data.name);
+    const safeMessage = escapeHTML(data.message);
+
+    // creating the basic html document
+    const html = `
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>${data.name}</title>
+
+        <style>
+            body {
+                background: #080d20;
+                color: #FAF8F5;
+                font-family: Georgia, serif;
+                text-align: center;
+                padding: 30px;
+            }
+
+            .keepsake {
+                max-width: 1000px;
+                margin: 0 auto;
+            }
+
+            .sky {
+                position: relative;
+                width: 100%;
+                aspect-ratio: ${data.width} / ${data.height};                   
+                margin-top: 40px;
+                border: 1px solid #5c5039;
+                border-radius: 12px;
+                background: radial-gradient(circle, #17213b, #080d20);
+            }
+
+            #connections {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            .star {
+                position: absolute;
+                transform: translate(-50%, -50%);
+                color: #D6B56D;
+                font-size: 24px;
+                text-shadow: 0 0 10px #D6B56D;
+            }
+
+            .connection-line {
+                stroke: #D6B56D;
+                stroke-width: 1.5;
+                opacity: 0.8;
+            }
+
+            .message {
+                margin-top: 35px;
+                line-height: 1.8;
+                white-space: pre-wrap;
+            }
+        </style>
+
+    </head>
+
+    <body>
+
+        <main class="keepsake">
+            <h1>${data.name}</h1>
+
+            <div class="sky">
+                <svg id="connections"></svg>
+            </div>
+
+            <script>
+                // retrieving the svg layer for drawing connections
+                const connectionsLayer = document.getElementById("connections");
+
+                // storing the star coordinates from the original constellation
+                const stars = ${JSON.stringify(data.stars).replace(/</g, "\\u003c")};
+
+                // storing the connections between stars
+                const connections = ${JSON.stringify(data.connections).replace(/</g, "\\u003c")};
+
+                // setting the original sky dimensions as the svg coordinate system
+                connectionsLayer.setAttribute(
+                    "viewBox",
+                    "0 0 ${data.width} ${data.height}"
+                );
+
+                // creating a visual star for every set of coordinates
+                stars.forEach(function(starData) {
+
+                    const star = document.createElement("span");
+
+                    // assigning the star's appearance
+                    star.className = "star";
+                    star.textContent = "✦";
+
+                    // converting original coordinates into percentages
+                    const xPercent = (starData.x / ${data.width}) * 100;
+                    const yPercent = (starData.y / ${data.height}) * 100;
+
+                    // positioning the star proportionally
+                    star.style.left = xPercent + "%";
+                    star.style.top = yPercent + "%";
+
+                    // adding the star to the sky
+                    document.querySelector(".sky").appendChild(star);
+
+                });
+
+                // drawing a line between every connected pair of stars
+                connections.forEach(function(connection) {
+
+                    // retrieving the coordinates of the two connected stars
+                    const firstStar = stars[connection[0]];
+                    const secondStar = stars[connection[1]];
+
+                    // creating an svg line
+                    const line = document.createElementNS(
+                        "http://www.w3.org/2000/svg",
+                        "line"
+                    );
+
+                    // setting the line's starting and ending coordinates
+                    line.setAttribute("x1", firstStar.x);
+                    line.setAttribute("y1", firstStar.y);
+                    line.setAttribute("x2", secondStar.x);
+                    line.setAttribute("y2", secondStar.y);
+
+                    // applying the css styling
+                    line.classList.add("connection-line");
+
+                    // adding the line to the svg layer
+                    connectionsLayer.appendChild(line);
+
+                });
+
+            </script>
+
+            <p class="message">${data.message}</p>
+        </main>
+
+    </body>
+
+    </html>
+    `;
+
+    // returning the completed html document
+    return html;
+}
 
