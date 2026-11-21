@@ -20,8 +20,6 @@ Users can create stars by clicking on a 'night sky' and connect them to form the
 
 ## built using
 
-## Built with
-
 - **HTML and CSS** – used to build and style the website.
 - **JavaScript** – handles the star creation, selection, connections, deletion and downloading of the finished constellation.
 - **SVG** – used to draw the lines connecting the stars.
