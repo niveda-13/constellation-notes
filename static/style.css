@@ -12,7 +12,7 @@
 body {
     margin: 0;                   
     min-height: 100vh; /* Make page at least as tall as screen */
-    background: #080d20; /* Overall page background colour */
+    background: #040b24f3; /* Overall page background colour */
     color: #f7edcf;/* Default text colour */
     font-family: Georgia, serif; /* Default font */
 }
@@ -37,26 +37,31 @@ body {
 .eyebrow {color: #FAF8F5;          /* like ivory ish*/
     font-family: sans-serif;
     font-size: 11px;
-    letter-spacing: 4px; }
+    letter-spacing: 2px; }
 
 
 /* Main website heading */
 
 h1 {
-    font-size: clamp(38px, 6vw, 64px);
+    font-size: clamp(30px, 4vw, 64px);
     /* Responsive font size:
-       minimum 38px, preferred 6vw, maximum 64px */
+       minimum, preferred, maximum */
 
     font-weight: normal; 
+    color: #D8D3C5;
     margin: 20px 0 10px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    letter-spacing: 1.5px;
 }
 
 
 /* Subtitle */
 
 .subtitle {
-    color: #D6B56D;          /* gold */
-    font-size: 17px;
+    color: #C2A66B;         
+    font-size: 19px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    letter-spacing: 1.5px;
 }
 
 
@@ -73,16 +78,16 @@ h1 {
     height: 478px;  
     margin-top: 45px; 
     overflow: hidden; /* stars inside the sky */
-    border: 1px solid #34334d; /* Subtle outline */
+    border: 0.5px solid #bbbab8c5; /* Subtle outline */
     border-radius: 12px; /* Rounded corners */
 
     /* Radial gradient for a soft glow in the middle. */
 
     background: radial-gradient(
         ellipse at center,
-        #19213e 0%,
-        #10172e 55%,
-        #080d20 100%
+        #1e2951 0%,
+        #111933 55%,
+        #070c1f 100%
     );
 }
 
@@ -101,7 +106,8 @@ h1 {
        to centre the text precisely. */
 
     color: #777b96;
-    font-size: 15px;
+    font-size: 16px;
+    letter-spacing: 2px;
 
     pointer-events: none;
     /* Let mouse clicks pass through this text.
@@ -113,9 +119,9 @@ h1 {
 
 footer {
     margin-top: 30px;        /* Space above footer */
-    color: #c6a96b;           /* Gold text */
-    font-size: 13px;
-    letter-spacing: 1px;
+    color: #777b96;           /* Gold text */
+    font-size: 18px;
+    letter-spacing: 1.5px;
 }
 
 
@@ -166,6 +172,8 @@ footer {
     border-radius: 6px;
     color: #D6B56D;
     font-family: Georgia, serif;
+    font-size: 16px;
+    letter-spacing: 1.5px;
     cursor: pointer;
 }
 
@@ -179,17 +187,18 @@ footer {
     margin-top: 15px;
     padding: 12px 24px;
     background-color: transparent;
-    border: 1px solid #D6B56D;
+    border: 1px solid #C2A66B;
     border-radius: 6px;
-    color: #D6B56D;
+    color: #C2A66B;
     font-family: Georgia, serif;
-    font-size: 15px;
+    letter-spacing: 1.5px;
+    font-size: 16px;
     cursor: pointer;
 }
 
 /* download button hover effect */
 #download-constellation:hover {
-    background-color: #D6B56D;
+    background-color: #C2A66B;
     color: #080d20;
 }
 
@@ -205,6 +214,9 @@ footer {
 /* keeping labels aligned to the left */
 .details-section label {
     text-align: left;
+    font-size: 18px;
+    letter-spacing: 1.5px;
+    color: #b6b5b3;
 }
 
 /* making input fields fit their container */
@@ -223,6 +235,7 @@ footer {
     border-radius: 6px;
     color: #FAF8F5;
     font-family: Georgia, serif;
+    letter-spacing: 1.5px;
     font-size: 15px;
     padding: 12px;
 }
@@ -230,13 +243,13 @@ footer {
 /* placeholder text */
 .details-section input::placeholder,
 .details-section textarea::placeholder {
-    color: #a99a76;
+    color: #777b96;
 }
 
 /* when the user clicks inside a field */
 .details-section input:focus,
 .details-section textarea:focus {
     outline: none;
-    border-color: #D6B56D;
+    border-color: #C2A66B;
     box-shadow: 0 0 8px rgba(214, 181, 109, 0.25);
 }
