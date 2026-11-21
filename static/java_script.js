@@ -360,6 +360,32 @@ function generateKeepsakeHTML(data) {
     const safeName = escapeHTML(data.name);
     const safeMessage = escapeHTML(data.message);
 
+    // generating the star elements
+    const starElements = data.stars.map(function(starData) {
+        const xPercent = (starData.x / data.width) * 100;
+        const yPercent = (starData.y / data.height) * 100;
+
+        return `
+            <span class="star" style="left: ${xPercent}%; top: ${yPercent}%;">✦</span>
+        `;
+    }).join("");
+
+    // generating the connecting lines
+    const connectionElements = data.connections.map(function(connection) {
+        const firstStar = data.stars[connection[0]];
+        const secondStar = data.stars[connection[1]];
+
+        return `
+            <line
+                x1="${firstStar.x}"
+                y1="${firstStar.y}"
+                x2="${secondStar.x}"
+                y2="${secondStar.y}"
+                class="connection-line"
+            />
+        `;
+    }).join("");
+
     // creating the basic html document
     const html = `
     <!DOCTYPE html>
@@ -369,7 +395,7 @@ function generateKeepsakeHTML(data) {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title>${data.name}</title>
+        <title>${safeName}</title>
 
         <style>
             body {
@@ -428,80 +454,22 @@ function generateKeepsakeHTML(data) {
     <body>
 
         <main class="keepsake">
-            <h1>${data.name}</h1>
+            <h1>${safeName}</h1>
 
             <div class="sky">
-                <svg id="connections"></svg>
+                <svg
+                    id="connections"
+                    viewBox="0 0 ${data.width} ${data.height}"
+                    preserveAspectRatio="none"
+                >
+                    ${connectionElements}
+                </svg>
+
+                ${starElements}
             </div>
 
-            <script>
-                // retrieving the svg layer for drawing connections
-                const connectionsLayer = document.getElementById("connections");
 
-                // storing the star coordinates from the original constellation
-                const stars = ${JSON.stringify(data.stars).replace(/</g, "\\u003c")};
-
-                // storing the connections between stars
-                const connections = ${JSON.stringify(data.connections).replace(/</g, "\\u003c")};
-
-                // setting the original sky dimensions as the svg coordinate system
-                connectionsLayer.setAttribute(
-                    "viewBox",
-                    "0 0 ${data.width} ${data.height}"
-                );
-
-                // creating a visual star for every set of coordinates
-                stars.forEach(function(starData) {
-
-                    const star = document.createElement("span");
-
-                    // assigning the star's appearance
-                    star.className = "star";
-                    star.textContent = "✦";
-
-                    // converting original coordinates into percentages
-                    const xPercent = (starData.x / ${data.width}) * 100;
-                    const yPercent = (starData.y / ${data.height}) * 100;
-
-                    // positioning the star proportionally
-                    star.style.left = xPercent + "%";
-                    star.style.top = yPercent + "%";
-
-                    // adding the star to the sky
-                    document.querySelector(".sky").appendChild(star);
-
-                });
-
-                // drawing a line between every connected pair of stars
-                connections.forEach(function(connection) {
-
-                    // retrieving the coordinates of the two connected stars
-                    const firstStar = stars[connection[0]];
-                    const secondStar = stars[connection[1]];
-
-                    // creating an svg line
-                    const line = document.createElementNS(
-                        "http://www.w3.org/2000/svg",
-                        "line"
-                    );
-
-                    // setting the line's starting and ending coordinates
-                    line.setAttribute("x1", firstStar.x);
-                    line.setAttribute("y1", firstStar.y);
-                    line.setAttribute("x2", secondStar.x);
-                    line.setAttribute("y2", secondStar.y);
-
-                    // applying the css styling
-                    line.classList.add("connection-line");
-
-                    // adding the line to the svg layer
-                    connectionsLayer.appendChild(line);
-
-                });
-
-            </script>
-
-            <p class="message">${data.message}</p>
+            <p class="message">${safeMessage}</p>
         </main>
 
     </body>
