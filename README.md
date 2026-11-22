@@ -1,6 +1,13 @@
 # my sirius
 
-★ a little constellation creator ★
+✧ a little constellation creator ✧
+
+## website:[my sirius](https://my-sirius.onrender.com/)
+
+*Note: The website "https://my-sirius.onrender.com/" is hosted on Render's free tier, so it may take a few seconds (sometimes up to a minute) to load if it has been inactive.*
+
+**source code:** [github repo](https://github.com/niveda-13/my-sirius)
+
 
 ## about the project
 
@@ -25,6 +32,7 @@ Users can create stars by clicking on a 'night sky' and connect them to form the
 - **SVG** – used to draw the lines connecting the stars.
 - **Python and Flask** – used to run and serve the website.
 - **Git and GitHub** – used for version control and tracking project development.
+- **Render** – used to deploy and host the website.
 
 ## project structure
 
@@ -33,6 +41,9 @@ my-sirius/
 │
 ├── app.py
 ├── requirements.txt
+├── README.md
+├── .gitignore
+│
 ├── templates/
 │   └── index.html
 │
@@ -44,25 +55,21 @@ my-sirius/
 ## to run the project locally
 
 1. Clone the repository:
-
    ```bash
    git clone https://github.com/niveda-13/my-sirius.git
    ```
 
 2. Navigate into the project folder:
-
    ```bash
    cd my-sirius
    ```
 
 3. Install the required packages:
-
    ```bash
    pip install -r requirements.txt
    ```
 
 4. Start the Flask application:
-
    ```bash
    python app.py
    ```
@@ -72,11 +79,9 @@ my-sirius/
 ## what I learned
 
 - Understanding how HTML, CSS and JavaScript work together to build an interactive website, and how changes in one affect the others.
-- Using JavaScript event listeners to handle user interactions.
-- Working with arrays and objects to store and manage dynamic data.
+- Using JavaScript event listeners and DOM manipulation to handle user interactions.
+- Working with arrays and objects to store and manage dynamic data, including keeping track of connections when stars are deleted.
 - Using SVG to create and manipulate graphical elements.
-- Generating downloadable, standalone HTML files using JavaScript.
-- A lot of troubleshooting ;)
+- Generating downloadable, standalone HTML files and deploying a Flask application using Render.
 
-I still have a lot to learn, but this project helped me understand how the different parts of a website come together and gave me the motivation to create more.
 
