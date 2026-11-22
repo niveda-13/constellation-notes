@@ -8,8 +8,6 @@
 
 **source code:** [github repo](https://github.com/niveda-13/my-sirius)
 
-<img width="991" height="614" alt="Screenshot 2026-11-22 at 1 24 38 AM" src="https://github.com/user-attachments/assets/76b636c9-989f-4e3b-b6de-bb3fcae97869" />
-
 ## about the project
 
 I wanted to build something cute while also familiarising myself with JavaScript and HTML. And since stars are pretty cute, I decided to make 'my sirius'.
